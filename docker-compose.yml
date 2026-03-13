@@ -1,0 +1,47 @@
+# docker-compose.yml
+# Runs the full DSAVault stack (Django backend + React/Nginx frontend).
+#
+# Quick start:
+#   1. cp .env.example .env   # then edit .env with real values
+#   2. docker compose up --build
+#   3. Open http://localhost in your browser.
+#
+# The backend API is accessible at http://localhost/api/
+# The Django admin is accessible at http://localhost/admin/
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # backend — Django application served by Gunicorn
+  # ---------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./myproject
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      # Persist the SQLite database across container restarts.
+      # Must mount to a directory, not a file path — Docker creates a directory
+      # at the mount point, and SQLite writes db.sqlite3 inside it.
+      - sqlite_data:/app/data
+    expose:
+      - "8000"
+
+  # ---------------------------------------------------------------------------
+  # frontend — compiled React app served by Nginx
+  # Nginx also reverse-proxies /api/* to the backend service.
+  # ---------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  sqlite_data:

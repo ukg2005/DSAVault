@@ -1,0 +1,26 @@
+# .dockerignore for the Django backend
+# Excludes files that should not be copied into the Docker image.
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Existing database (a fresh one is created on first run via migrate)
+db.sqlite3
+
+# Development tool configs
+.env
+.git/
+.gitignore
+
+# Test and coverage artifacts
+.coverage
+htmlcov/

@@ -1,0 +1,11 @@
+# .dockerignore for the React frontend
+# Excludes files that should not be copied into the Docker build context.
+
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
+.git/
+.gitignore
+*.md
