@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getProblem, updateProblem, deleteProblem } from '../api/problems';
-import { getAttempts, createAttempt } from '../api/attempts';
+import { getAttempts, createAttempt, updateAttempt, deleteAttempt } from '../api/attempts';
 import type { Problem, Attempt } from '../types';
 import { difficultyBadge, statusBadge } from '../components/Badge';
 import Modal from '../components/Modal';
+import { Edit2, Trash2 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 export default function ProblemDetail() {
   const { patternId, problemId } = useParams<{ patternId: string; problemId: string }>();
@@ -18,6 +20,8 @@ export default function ProblemDetail() {
 
   const [showEditProblem, setShowEditProblem] = useState(false);
   const [showLogAttempt, setShowLogAttempt] = useState(false);
+  const [showEditAttempt, setShowEditAttempt] = useState(false);
+  const [editAttemptId, setEditAttemptId] = useState<number | null>(null);
 
   const [editForm, setEditForm] = useState({
     problem_name: '',
@@ -30,6 +34,9 @@ export default function ProblemDetail() {
 
   const [attemptForm, setAttemptForm] = useState({ status: 'OWN', when: 'now', customDate: '', notes: '' });
   const [attemptSaving, setAttemptSaving] = useState(false);
+
+  const [editAttemptForm, setEditAttemptForm] = useState({ status: 'OWN', solved_at: '', notes: '' });
+  const [editAttemptSaving, setEditAttemptSaving] = useState(false);
 
   const load = async () => {
     const [probRes, attRes] = await Promise.all([
@@ -103,6 +110,43 @@ export default function ProblemDetail() {
     }
   };
 
+  const openEditAttempt = (att: Attempt) => {
+    setEditAttemptId(att.id);
+    setEditAttemptForm({
+      status: att.status,
+      solved_at: att.solved_at || '',
+      notes: att.notes || ''
+    });
+    setShowEditAttempt(true);
+  };
+
+  const handleEditAttempt = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editAttemptId) return;
+    setEditAttemptSaving(true);
+    try {
+      await updateAttempt(pid, probId, editAttemptId, {
+        status: editAttemptForm.status as Attempt['status'],
+        solved_at: editAttemptForm.solved_at || undefined,
+        notes: editAttemptForm.notes || null,
+      });
+      setShowEditAttempt(false);
+      load();
+    } finally {
+      setEditAttemptSaving(false);
+    }
+  };
+
+  const handleDeleteAttempt = async (att: Attempt) => {
+    if (!confirm('Delete this attempt? This cannot be undone.')) return;
+    try {
+      await deleteAttempt(pid, probId, att.id);
+      load();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   if (loading) return <div className="loading">Loading…</div>;
   if (!problem) return <div className="error-msg">Problem not found.</div>;
 
@@ -147,7 +191,7 @@ export default function ProblemDetail() {
         </div>
       </div>
 
-      {problem.notes && <div className="detail-notes">{problem.notes}</div>}
+      {problem.notes && <div className="detail-notes markdown-content"><ReactMarkdown>{problem.notes}</ReactMarkdown></div>}
 
       <div className="page-header" style={{ marginBottom: 12 }}>
         <h2 style={{ fontSize: 16, fontWeight: 600 }}>Attempts ({attempts.length})</h2>
@@ -164,14 +208,24 @@ export default function ProblemDetail() {
       ) : (
         <div className="attempt-list">
           {attempts.map((att) => (
-            <div key={att.id} className="attempt-row">
-              <div className="attempt-header">
-                {statusBadge(att.status)}
-                <span className="attempt-date">
-                  {new Date(att.solved_at).toLocaleDateString('en-GB')}
-                </span>
+            <div key={att.id} className="attempt-row" style={{ position: 'relative' }}>
+              <div className="attempt-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  {statusBadge(att.status)}
+                  <span className="attempt-date">
+                    {new Date(att.solved_at).toLocaleDateString('en-GB')}
+                  </span>
+                </div>
+                <div className="flex-row" style={{ gap: 8 }}>
+                  <button className="btn btn-ghost btn-sm" onClick={() => openEditAttempt(att)} title="Edit Attempt">
+                    <Edit2 size={14} />
+                  </button>
+                  <button className="btn btn-ghost btn-sm" style={{ color: 'var(--danger)' }} onClick={() => handleDeleteAttempt(att)} title="Delete Attempt">
+                    <Trash2 size={14} />
+                  </button>
+                </div>
               </div>
-              {att.notes && <div className="attempt-notes">{att.notes}</div>}
+              {att.notes && <div className="attempt-notes markdown-content"><ReactMarkdown>{att.notes}</ReactMarkdown></div>}
             </div>
           ))}
         </div>
@@ -261,16 +315,18 @@ export default function ProblemDetail() {
           <form id="log-attempt-form" onSubmit={handleLogAttempt}>
             <div className="form-group">
               <label className="form-label">Status</label>
-              <select
-                className="select"
-                value={attemptForm.status}
-                onChange={(e) => setAttemptForm({ ...attemptForm, status: e.target.value })}
-              >
-                <option value="OWN">Own — solved independently</option>
-                <option value="PARTIAL">Partial — needed some help</option>
-                <option value="HINT">Hint — used hints/editorial</option>
-                <option value="FAILED">Failed</option>
-              </select>
+              <div className="status-grid">
+                {['OWN', 'PARTIAL', 'HINT', 'FAILED'].map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    className={`status-btn ${attemptForm.status === s ? 'active' : ''}`}
+                    onClick={() => setAttemptForm({ ...attemptForm, status: s as Attempt['status'] })}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
             </div>
             <div className="form-group">
               <label className="form-label">When</label>
@@ -313,6 +369,60 @@ export default function ProblemDetail() {
                 value={attemptForm.notes}
                 onChange={(e) => setAttemptForm({ ...attemptForm, notes: e.target.value })}
                 placeholder="What did you learn? Where did you get stuck?"
+              />
+            </div>
+          </form>
+        </Modal>
+      )}
+
+      {/* Edit Attempt Modal */}
+      {showEditAttempt && (
+        <Modal
+          title="Edit Attempt"
+          onClose={() => setShowEditAttempt(false)}
+          footer={
+            <>
+              <button className="btn btn-ghost" onClick={() => setShowEditAttempt(false)}>Cancel</button>
+              <button className="btn btn-primary" form="edit-attempt-form" type="submit" disabled={editAttemptSaving}>
+                {editAttemptSaving ? 'Saving…' : 'Save'}
+              </button>
+            </>
+          }
+        >
+          <form id="edit-attempt-form" onSubmit={handleEditAttempt}>
+            <div className="form-group">
+              <label className="form-label">Status</label>
+              <div className="status-grid">
+                {['OWN', 'PARTIAL', 'HINT', 'FAILED'].map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    className={`status-btn ${editAttemptForm.status === s ? 'active' : ''}`}
+                    onClick={() => setEditAttemptForm({ ...editAttemptForm, status: s as Attempt['status'] })}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="form-label">Date</label>
+              <input
+                className="input"
+                type="date"
+                required
+                value={editAttemptForm.solved_at}
+                onChange={(e) => setEditAttemptForm({ ...editAttemptForm, solved_at: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Notes</label>
+              <textarea
+                className="textarea"
+                style={{ minHeight: 100 }}
+                value={editAttemptForm.notes}
+                onChange={(e) => setEditAttemptForm({ ...editAttemptForm, notes: e.target.value })}
+                placeholder="What went well? What did you miss?"
               />
             </div>
           </form>

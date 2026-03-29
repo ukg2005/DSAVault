@@ -1,5 +1,5 @@
 import client from './client';
-import type { Problem } from '../types';
+import type { Problem, PaginatedResponse } from '../types';
 
 export const getProblems = (patternId: number) =>
   client.get<Problem[]>(`/api/patterns/${patternId}/problems/`);
@@ -11,4 +11,5 @@ export const updateProblem = (patternId: number, problemId: number, data: Partia
   client.patch<Problem>(`/api/patterns/${patternId}/problems/${problemId}/`, data);
 export const deleteProblem = (patternId: number, problemId: number) =>
   client.delete(`/api/patterns/${patternId}/problems/${problemId}/`);
-export const getAllProblems = () => client.get<Problem[]>('/api/history/');
+export const getAllProblems = (params?: Record<string, any>) => 
+  client.get<PaginatedResponse<Problem>>('/api/history/', { params });

@@ -1,0 +1,509 @@
+[
+{
+  "model": "dsa.pattern",
+  "pk": 3,
+  "fields": {
+    "pattern": "Arrays",
+    "confidence": "LOW",
+    "notes": "This pattern problems are complicated as they don't follow a fixed few types of problems."
+  }
+},
+{
+  "model": "dsa.pattern",
+  "pk": 4,
+  "fields": {
+    "pattern": "Two Pointers",
+    "confidence": "MEDIUM",
+    "notes": ""
+  }
+},
+{
+  "model": "dsa.pattern",
+  "pk": 5,
+  "fields": {
+    "pattern": "Sliding Window",
+    "confidence": "MEDIUM",
+    "notes": "historically struggled with this pattern"
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 2,
+  "fields": {
+    "problem_name": "1. Two Sum",
+    "pattern": 3,
+    "difficulty": "EASY",
+    "link": "https://leetcode.com/problems/two-sum/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 3,
+  "fields": {
+    "problem_name": "217. Contains Duplicate",
+    "pattern": 3,
+    "difficulty": "EASY",
+    "link": "https://leetcode.com/problems/contains-duplicate/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 4,
+  "fields": {
+    "problem_name": "242. Valid Anagram",
+    "pattern": 3,
+    "difficulty": "EASY",
+    "link": "https://leetcode.com/problems/valid-anagram/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 5,
+  "fields": {
+    "problem_name": "128. Longest Consecutive Sequence",
+    "pattern": 3,
+    "difficulty": "MEDIUM",
+    "link": "https://leetcode.com/problems/longest-consecutive-sequence/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 7,
+  "fields": {
+    "problem_name": "36. Valid Sudoku",
+    "pattern": 3,
+    "difficulty": "MEDIUM",
+    "link": "https://leetcode.com/problems/valid-sudoku/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 8,
+  "fields": {
+    "problem_name": "49. Group Anagrams",
+    "pattern": 3,
+    "difficulty": "MEDIUM",
+    "link": "https://leetcode.com/problems/group-anagrams/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 9,
+  "fields": {
+    "problem_name": "238. Product of Array Except Self",
+    "pattern": 3,
+    "difficulty": "MEDIUM",
+    "link": "https://leetcode.com/problems/product-of-array-except-self/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 10,
+  "fields": {
+    "problem_name": "347. Top K Frequent Elements",
+    "pattern": 3,
+    "difficulty": "MEDIUM",
+    "link": "https://leetcode.com/problems/top-k-frequent-elements/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 11,
+  "fields": {
+    "problem_name": "125. Valid Palindrome",
+    "pattern": 4,
+    "difficulty": "MEDIUM",
+    "link": "https://leetcode.com/problems/valid-palindrome/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 12,
+  "fields": {
+    "problem_name": "26. Remove Duplicates from Sorted Array",
+    "pattern": 4,
+    "difficulty": "EASY",
+    "link": "https://leetcode.com/problems/remove-duplicates-from-sorted-array/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 13,
+  "fields": {
+    "problem_name": "283. Move Zeros",
+    "pattern": 4,
+    "difficulty": "EASY",
+    "link": "https://leetcode.com/problems/move-zeroes/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 14,
+  "fields": {
+    "problem_name": "844. Backspace string compare",
+    "pattern": 4,
+    "difficulty": "EASY",
+    "link": "https://leetcode.com/problems/backspace-string-compare/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 15,
+  "fields": {
+    "problem_name": "977. Squares of Sorted Array",
+    "pattern": 4,
+    "difficulty": "MEDIUM",
+    "link": "https://leetcode.com/problems/squares-of-a-sorted-array/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 16,
+  "fields": {
+    "problem_name": "11. Container with Most Water",
+    "pattern": 4,
+    "difficulty": "MEDIUM",
+    "link": "https://leetcode.com/problems/container-with-most-water/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 17,
+  "fields": {
+    "problem_name": "15. 3Sum",
+    "pattern": 4,
+    "difficulty": "MEDIUM",
+    "link": "https://leetcode.com/problems/3sum/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 18,
+  "fields": {
+    "problem_name": "80. Remove Duplicates from Sorted Array 2",
+    "pattern": 4,
+    "difficulty": "MEDIUM",
+    "link": "https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 19,
+  "fields": {
+    "problem_name": "167. Two Sum2 - Input Array is Sorted",
+    "pattern": 4,
+    "difficulty": "MEDIUM",
+    "link": "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 20,
+  "fields": {
+    "problem_name": "42. Trapping Rain Water",
+    "pattern": 4,
+    "difficulty": "HARD",
+    "link": "https://leetcode.com/problems/trapping-rain-water/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 21,
+  "fields": {
+    "problem_name": "121. Best Time to Buy and Sell Stock",
+    "pattern": 5,
+    "difficulty": "EASY",
+    "link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.problem",
+  "pk": 22,
+  "fields": {
+    "problem_name": "1456. Maximum Number of Vowels in a Substring of Given Length",
+    "pattern": 5,
+    "difficulty": "MEDIUM",
+    "link": "https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/",
+    "reminder": null,
+    "notes": null
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 3,
+  "fields": {
+    "problem": 2,
+    "solved_at": "2026-03-08",
+    "status": "HINT",
+    "notes": "figured the pattern, but impatience"
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 4,
+  "fields": {
+    "problem": 3,
+    "solved_at": "2026-03-08",
+    "status": "OWN",
+    "notes": ""
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 5,
+  "fields": {
+    "problem": 4,
+    "solved_at": "2026-03-08",
+    "status": "PARTIAL",
+    "notes": "got the pattern, but partly faultered in the implementation"
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 6,
+  "fields": {
+    "problem": 5,
+    "solved_at": "2026-03-08",
+    "status": "OWN",
+    "notes": ""
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 7,
+  "fields": {
+    "problem": 7,
+    "solved_at": "2026-03-08",
+    "status": "PARTIAL",
+    "notes": "missed that we need to create a dict of sets"
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 11,
+  "fields": {
+    "problem": 7,
+    "solved_at": "2026-03-09",
+    "status": "OWN",
+    "notes": null
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 13,
+  "fields": {
+    "problem": 8,
+    "solved_at": "2026-03-09",
+    "status": "OWN",
+    "notes": null
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 14,
+  "fields": {
+    "problem": 8,
+    "solved_at": "2026-03-08",
+    "status": "FAILED",
+    "notes": "did not figure out the trick"
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 15,
+  "fields": {
+    "problem": 9,
+    "solved_at": "2026-03-09",
+    "status": "OWN",
+    "notes": null
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 17,
+  "fields": {
+    "problem": 10,
+    "solved_at": "2026-03-09",
+    "status": "PARTIAL",
+    "notes": "figured the trick, but struggled with the implementation"
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 18,
+  "fields": {
+    "problem": 11,
+    "solved_at": "2026-03-09",
+    "status": "OWN",
+    "notes": null
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 19,
+  "fields": {
+    "problem": 12,
+    "solved_at": "2026-03-09",
+    "status": "FAILED",
+    "notes": "impatience, but still failed to find the trick"
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 20,
+  "fields": {
+    "problem": 13,
+    "solved_at": "2026-03-10",
+    "status": "OWN",
+    "notes": null
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 21,
+  "fields": {
+    "problem": 14,
+    "solved_at": "2026-03-10",
+    "status": "OWN",
+    "notes": "solved with trivial approach"
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 22,
+  "fields": {
+    "problem": 14,
+    "solved_at": "2026-03-10",
+    "status": "FAILED",
+    "notes": "realized the pattern, but impatience"
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 23,
+  "fields": {
+    "problem": 15,
+    "solved_at": "2026-03-10",
+    "status": "HINT",
+    "notes": "need help with the pattern"
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 24,
+  "fields": {
+    "problem": 16,
+    "solved_at": "2026-03-10",
+    "status": "OWN",
+    "notes": null
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 25,
+  "fields": {
+    "problem": 12,
+    "solved_at": "2026-03-10",
+    "status": "FAILED",
+    "notes": null
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 27,
+  "fields": {
+    "problem": 18,
+    "solved_at": "2026-03-11",
+    "status": "OWN",
+    "notes": null
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 28,
+  "fields": {
+    "problem": 17,
+    "solved_at": "2026-03-11",
+    "status": "PARTIAL",
+    "notes": "forgot a detail to skip duplicates"
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 29,
+  "fields": {
+    "problem": 19,
+    "solved_at": "2026-03-11",
+    "status": "OWN",
+    "notes": null
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 30,
+  "fields": {
+    "problem": 20,
+    "solved_at": "2026-03-12",
+    "status": "OWN",
+    "notes": null
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 31,
+  "fields": {
+    "problem": 21,
+    "solved_at": "2026-03-12",
+    "status": "OWN",
+    "notes": null
+  }
+},
+{
+  "model": "dsa.attempt",
+  "pk": 32,
+  "fields": {
+    "problem": 22,
+    "solved_at": "2026-03-12",
+    "status": "OWN",
+    "notes": null
+  }
+}
+]

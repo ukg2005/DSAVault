@@ -25,6 +25,13 @@ export interface Pattern {
   problems_solved: number;
 }
 
+export interface PaginatedResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
+
 export interface DashboardData {
   total_problems: number;
   by_pattern: { pattern: string; problem_count: number; confidence: string }[];
@@ -33,4 +40,5 @@ export interface DashboardData {
   due_for_revision: { id: number; problem_name: string; difficulty: string; reminder: string }[];
   recent_attempts: { problem__problem_name: string; status: string; solved_at: string }[];
   weak_patterns: { pattern: string; confidence: string }[];
+  activity_graph: { date: string; count: number }[];
 }

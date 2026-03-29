@@ -1,7 +1,8 @@
-from rest_framework import generics, filters
+from rest_framework import generics, filters as drf_filters
 from .models import Pattern, Problem, Attempt
 from .serializers import PatternSerializer, ProblemSerializer, AttemptSerializer
 from django_filters.rest_framework import DjangoFilterBackend
+from django_filters import rest_framework as filters
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Count, Q
@@ -16,7 +17,8 @@ class PatternListView(generics.ListCreateAPIView):
     """
 
     serializer_class = PatternSerializer
-    queryset = Pattern.objects.all()
+    queryset = Pattern.objects.all().order_by('id')
+    pagination_class = None
 
 
 class PatternDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -39,6 +41,7 @@ class ProblemListView(generics.ListCreateAPIView):
     """
 
     serializer_class = ProblemSerializer
+    pagination_class = None
 
     def get_queryset(self):
         return Problem.objects.filter(pattern_id=self.kwargs['pattern_pk']).order_by('-id')
@@ -67,6 +70,7 @@ class AttemptListView(generics.ListCreateAPIView):
     """
 
     serializer_class = AttemptSerializer
+    pagination_class = None
 
     def get_queryset(self):
         return Attempt.objects.filter(problem_id=self.kwargs['problem_pk']).order_by('-solved_at')
@@ -75,14 +79,71 @@ class AttemptListView(generics.ListCreateAPIView):
         serializer.save(problem_id=self.kwargs['problem_pk'])
 
 
+class AttemptDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    GET    /api/patterns/<pattern_pk>/problems/<problem_pk>/attempts/<attempt_pk>/
+    PUT    /api/patterns/<pattern_pk>/problems/<problem_pk>/attempts/<attempt_pk>/
+    PATCH  /api/patterns/<pattern_pk>/problems/<problem_pk>/attempts/<attempt_pk>/
+    DELETE /api/patterns/<pattern_pk>/problems/<problem_pk>/attempts/<attempt_pk>/
+    """
+    serializer_class = AttemptSerializer
+    lookup_url_kwarg = 'attempt_pk'
+
+    def get_queryset(self):
+        return Attempt.objects.filter(problem_id=self.kwargs['problem_pk'])
+
+
+class ProblemHistoryFilter(filters.FilterSet):
+    pattern = filters.CharFilter(field_name='pattern__pattern', lookup_expr='icontains')
+    difficulty = filters.CharFilter(field_name='difficulty', lookup_expr='iexact')
+    confidence = filters.CharFilter(field_name='pattern__confidence', lookup_expr='iexact')
+    date_after = filters.DateFilter(field_name='attempts__solved_at', lookup_expr='gte')
+    date_before = filters.DateFilter(field_name='attempts__solved_at', lookup_expr='lte')
+    revision = filters.BooleanFilter(method='filter_revision')
+    search = filters.CharFilter(field_name='problem_name', lookup_expr='icontains')
+
+    class Meta:
+        model = Problem
+        fields = ['pattern', 'difficulty', 'confidence', 'date_after', 'date_before', 'revision', 'search']
+
+    def filter_revision(self, queryset, name, value):
+        from django.utils import timezone
+        if value:
+            return queryset.filter(reminder__lte=timezone.now())
+        return queryset
+
 class ProblemHistoryView(generics.ListAPIView):
     """
-    GET /api/history/  - list all problems ordered by most recently added
+    GET /api/history/  - list all problems ordered by most recently added       
     """
 
     serializer_class = ProblemSerializer
-    queryset = Problem.objects.all().order_by('-id')
+    queryset = Problem.objects.all().distinct()
+    filter_backends = [DjangoFilterBackend, drf_filters.OrderingFilter]
+    filterset_class = ProblemHistoryFilter
+    ordering_fields = ['id', 'difficulty', 'reminder', 'attempts__solved_at']
+    ordering = ['-id']
 
+
+class CheckDuplicateLinkView(APIView):
+    """
+    GET /api/check-link/?url=...
+    Returns {'exists': bool, 'problem_id': int, 'pattern_id': int}
+    """
+    def get(self, request):
+        url = request.query_params.get('url')
+        if not url:
+            return Response({'exists': False})
+        
+        prob = Problem.objects.filter(link=url).first()
+        if prob:
+            return Response({
+                'exists': True,
+                'problem_id': prob.pk,
+                'pattern_id': prob.pattern.pk,
+                'problem_name': prob.problem_name
+            })
+        return Response({'exists': False})
 
 class DashboardView(APIView):
     """
@@ -127,6 +188,21 @@ class DashboardView(APIView):
             Q(confidence='BLIND') | Q(confidence='LOW')
         ).values('pattern', 'confidence')
 
+        # Compute activity graph in Python to avoid SQLite timezone casting errors
+        recent_activity_attempts = Attempt.objects.filter(
+            solved_at__gte=timezone.now() - timedelta(days=60)
+        ).values('solved_at')
+        
+        from collections import defaultdict
+        activity_dict = defaultdict(int)
+        for att in recent_activity_attempts:
+            if att['solved_at']:
+                # format solved_at as YYYY-MM-DD
+                d_str = att['solved_at'].strftime('%Y-%m-%d')
+                activity_dict[d_str] += 1
+                
+        activity_graph = [{'date': k, 'count': v} for k, v in sorted(activity_dict.items())]
+
         return Response({
             'total_problems': total_problems,
             'by_pattern': list(by_pattern),
@@ -135,6 +211,7 @@ class DashboardView(APIView):
             'due_for_revision': list(due_for_revision),
             'recent_attempts': list(recent_attempts),
             'weak_patterns': list(weak_patterns),
+            'activity_graph': activity_graph,
         })
 
 

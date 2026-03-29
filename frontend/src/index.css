@@ -1,51 +1,53 @@
 :root {
   color-scheme: dark;
-  --bg: #0c1118;
-  --bg-2: #101722;
-  --panel: #141c28;
-  --panel-2: #182232;
-  --panel-3: #1d2a3d;
-  --line: #243446;
-  --line-strong: #30465f;
-  --text: #e5edf8;
-  --text-muted: #90a2ba;
-  --text-dim: #6e8098;
-  --accent: #5ea7ff;
-  --accent-strong: #4a96f5;
-  --accent-soft: rgba(94, 167, 255, 0.14);
-  --danger: #f17a7a;
-  --danger-soft: rgba(241, 122, 122, 0.14);
-  --success: #5fd28f;
-  --success-soft: rgba(95, 210, 143, 0.14);
-  --warning: #e9bb4f;
-  --warning-soft: rgba(233, 187, 79, 0.14);
-  --violet: #aa8fe8;
-  --violet-soft: rgba(170, 143, 232, 0.14);
-  --shadow: 0 6px 20px rgba(2, 8, 23, 0.28);
-  --r-lg: 18px;
-  --r-md: 12px;
-  --r-sm: 9px;
+  --bg: #09090b;
+  --bg-2: #121214;
+  --panel: #18181b;
+  --panel-2: #27272a;
+  --panel-3: #3f3f46;
+  --line: #27272a;
+  --line-strong: #3f3f46;
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --text-dim: #71717a;
+  --accent: #3b82f6;
+  --accent-strong: #2563eb;
+  --accent-soft: rgba(59, 130, 246, 0.15);
+  
+  --danger: #ef4444;
+  --danger-soft: rgba(239, 68, 68, 0.15);
+  --success: #22c55e;
+  --success-soft: rgba(34, 197, 94, 0.15);
+  --warning: #f59e0b;
+  --warning-soft: rgba(245, 158, 11, 0.15);
+  --violet: #8b5cf6;
+  --violet-soft: rgba(139, 92, 246, 0.15);
 
-  --easy: #4ade80;
-  --easy-bg: rgba(74, 222, 128, 0.14);
-  --medium: #fbbf24;
-  --medium-bg: rgba(251, 191, 36, 0.14);
-  --hard: #f87171;
-  --hard-bg: rgba(248, 113, 113, 0.14);
-  --high: #4ade80;
-  --high-bg: rgba(74, 222, 128, 0.14);
-  --low: #fb923c;
-  --low-bg: rgba(251, 146, 60, 0.14);
-  --blind: #f87171;
-  --blind-bg: rgba(248, 113, 113, 0.14);
-  --own: #4ade80;
-  --own-bg: rgba(74, 222, 128, 0.14);
-  --partial: #fbbf24;
-  --partial-bg: rgba(251, 191, 36, 0.14);
-  --hint: #c084fc;
-  --hint-bg: rgba(192, 132, 252, 0.14);
-  --failed: #f87171;
-  --failed-bg: rgba(248, 113, 113, 0.14);
+  --shadow: 0 4px 20px rgba(0,0,0,0.3);
+  --r-lg: 16px;
+  --r-md: 10px;
+  --r-sm: 6px;
+
+  --easy: #22c55e;
+  --easy-bg: rgba(34, 197, 94, 0.15);
+  --medium: #f59e0b;
+  --medium-bg: rgba(245, 158, 11, 0.15);
+  --hard: #ef4444;
+  --hard-bg: rgba(239, 68, 68, 0.15);
+  --high: #22c55e;
+  --high-bg: rgba(34, 197, 94, 0.15);
+  --low: #f97316;
+  --low-bg: rgba(249, 115, 22, 0.15);
+  --blind: #ef4444;
+  --blind-bg: rgba(239, 68, 68, 0.15);
+  --own: #22c55e;
+  --own-bg: rgba(34, 197, 94, 0.15);
+  --partial: #f59e0b;
+  --partial-bg: rgba(245, 158, 11, 0.15);
+  --hint: #8b5cf6;
+  --hint-bg: rgba(139, 92, 246, 0.15);
+  --failed: #ef4444;
+  --failed-bg: rgba(239, 68, 68, 0.15);
 }
 
 * {
@@ -122,7 +124,7 @@ textarea {
   height: 34px;
   border-radius: 10px;
   background: var(--accent);
-  color: #0d1f35;
+  color: var(--bg);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -155,7 +157,7 @@ textarea {
 .nav-link:hover,
 .nav-link.active {
   color: var(--text);
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--panel-3);
 }
 
 .navbar-meta {
@@ -356,16 +358,16 @@ textarea {
 
 .btn-primary {
   background: var(--accent);
-  color: #0f2239;
+  color: var(--bg);
 }
 
 .btn-primary:hover:not(:disabled) {
   background: var(--accent-strong);
-  color: #eaf3ff;
+  color: var(--text);
 }
 
 .btn-ghost {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--panel-3);
   border-color: var(--line);
   color: var(--text-soft);
 }
@@ -497,7 +499,7 @@ input[type="radio"]:hover {
   display: inline-grid;
   place-items: center;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--panel-2);
   color: var(--text-soft);
   cursor: pointer;
 }
@@ -530,7 +532,7 @@ input[type="radio"]:hover {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--panel-3);
 }
 
 .table td {
@@ -540,7 +542,7 @@ input[type="radio"]:hover {
 }
 
 .table tbody tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--panel-3);
 }
 
 .problem-list,
@@ -703,5 +705,88 @@ input[type="radio"]:hover {
   .detail-actions,
   .problem-actions {
     flex-direction: column;
+  }
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+  --bg: #fafafa;
+  --bg-2: #f4f4f5;
+  --panel: #ffffff;
+  --panel-2: #f4f4f5;
+  --panel-3: #e4e4e7;
+  --line: #e4e4e7;
+  --line-strong: #d4d4d8;
+  --text: #09090b;
+  --text-muted: #52525b;
+  --text-dim: #a1a1aa;
+  --accent: #2563eb;
+  --accent-strong: #1d4ed8;
+  --accent-soft: rgba(37, 99, 235, 0.1);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+
+  --easy: #16a34a;
+  --easy-bg: rgba(22, 163, 74, 0.15);
+  --medium: #d97706;
+  --medium-bg: rgba(217, 119, 6, 0.15);
+  --hard: #dc2626;
+  --hard-bg: rgba(220, 38, 38, 0.15);
+  --high: #16a34a;
+  --high-bg: rgba(22, 163, 74, 0.15);
+  --low: #ea580c;
+  --low-bg: rgba(234, 88, 12, 0.15);
+  --blind: #dc2626;
+  --blind-bg: rgba(220, 38, 38, 0.15);
+  --own: #16a34a;
+  --own-bg: rgba(22, 163, 74, 0.15);
+  --partial: #d97706;
+  --partial-bg: rgba(217, 119, 6, 0.15);
+  --hint: #7c3aed;
+  --hint-bg: rgba(124, 58, 237, 0.15);
+  --failed: #dc2626;
+  --failed-bg: rgba(220, 38, 38, 0.15);
+}
+
+
+
+/* Status Button Grid */
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.status-btn {
+  padding: 8px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.status-btn:hover {
+  background: var(--panel-3);
+  color: var(--text);
+}
+
+.status-btn.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.status-btn.active:nth-child(1) { border-color: var(--own); background: var(--own-bg); color: var(--own); }
+.status-btn.active:nth-child(2) { border-color: var(--partial); background: var(--partial-bg); color: var(--partial); }
+.status-btn.active:nth-child(3) { border-color: var(--hint); background: var(--hint-bg); color: var(--hint); }
+.status-btn.active:nth-child(4) { border-color: var(--failed); background: var(--failed-bg); color: var(--failed); }
+
+@media (max-width: 500px) {
+  .status-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }

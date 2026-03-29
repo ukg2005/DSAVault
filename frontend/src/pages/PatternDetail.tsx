@@ -6,6 +6,8 @@ import type { Pattern, Problem } from '../types';
 import { confidenceBadge, difficultyBadge, statusBadge } from '../components/Badge';
 import Modal from '../components/Modal';
 
+import ReactMarkdown from 'react-markdown';
+
 export default function PatternDetail() {
   const { patternId } = useParams<{ patternId: string }>();
   const pid = Number(patternId);
@@ -29,12 +31,40 @@ export default function PatternDetail() {
     notes: '',
   });
   const [problemSaving, setProblemSaving] = useState(false);
+  const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
 
   const load = async () => {
     const [patRes, probRes] = await Promise.all([getPattern(pid), getProblems(pid)]);
     setPattern(patRes.data);
-    setProblems(probRes.data);
+    
+    // Sort problems by difficulty for pattern study mode (Easy -> Medium -> Hard)
+    const difficultyWeight: Record<string, number> = { EASY: 1, MEDIUM: 2, HARD: 3 };
+    const rawProblems = Array.isArray(probRes.data) ? probRes.data : ((probRes.data as any).results || []);
+    const sortedProblems = [...rawProblems].sort((a, b) => 
+      (difficultyWeight[a.difficulty] || 0) - (difficultyWeight[b.difficulty] || 0)
+    );
+
+    setProblems(sortedProblems);
     setLoading(false);
+  };
+
+  const handleLinkBlur = async () => {
+    if (!problemForm.link) {
+      setDuplicateWarning(null);
+      return;
+    }
+    try {
+      const { default: client } = await import('../api/client');
+      const res = await client.get(`/api/check-link/?url=${encodeURIComponent(problemForm.link)}`);
+      const data = res.data;
+      if (data.exists) {
+        setDuplicateWarning(`Warning: Problem already exists as "${data.problem_name}"`);
+      } else {
+        setDuplicateWarning(null);
+      }
+    } catch (e) {
+      console.error('Failed to check link', e);
+    }
   };
 
   useEffect(() => {
@@ -119,7 +149,7 @@ export default function PatternDetail() {
         </div>
       </div>
 
-      {pattern.notes && <div className="detail-notes">{pattern.notes}</div>}
+      {pattern.notes && <div className="detail-notes markdown-content"><ReactMarkdown>{pattern.notes}</ReactMarkdown></div>}
 
       <div className="page-header" style={{ marginBottom: 16 }}>
         <h2 style={{ fontSize: 16, fontWeight: 600 }}>Problems ({problems.length})</h2>
@@ -266,8 +296,14 @@ export default function PatternDetail() {
                 type="url"
                 value={problemForm.link}
                 onChange={(e) => setProblemForm({ ...problemForm, link: e.target.value })}
+                onBlur={handleLinkBlur}
                 placeholder="https://leetcode.com/problems/…"
               />
+              {duplicateWarning && (
+                <div style={{ color: 'var(--warning)', fontSize: '0.85rem', marginTop: '4px' }}>
+                  {duplicateWarning}
+                </div>
+              )}
             </div>
             <div className="form-group">
               <label className="form-label">Reminder</label>
@@ -293,3 +329,4 @@ export default function PatternDetail() {
     </div>
   );
 }
+

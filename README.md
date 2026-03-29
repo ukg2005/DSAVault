@@ -107,6 +107,53 @@ Use this section with the env templates in `.env.example` and `frontend/.env.exa
 
 6. Deploy. Railway will run migrations at startup and serve Django with Gunicorn.
 
+#### Optional: Use Docker on Railway
+
+You can deploy the backend with a Docker image instead of Nixpacks.
+
+Option A: Build from Dockerfile in this repo
+1. In Railway backend service settings, set Root Directory to myproject.
+2. Set builder to Dockerfile (or let Railway auto-detect the Dockerfile).
+3. Keep the same environment variables listed above.
+
+Option B: Use a prebuilt image from a registry
+1. Build and push your image to Docker Hub or GHCR.
+2. In Railway, create a service from Image and point it to your image tag.
+3. Ensure the container starts Gunicorn on 0.0.0.0:$PORT.
+4. Keep the same environment variables listed above.
+
+Important:
+- Do not use SQLite for production on Railway because container filesystems are ephemeral.
+- Keep using Railway Postgres and DATABASE_URL.
+
+#### No GitHub flow: deploy Railway from Docker image only
+
+If your GitHub integration is failing, use this flow:
+
+1. Build the backend image locally from `myproject/Dockerfile`.
+2. Push the image to Docker Hub or GHCR.
+3. In Railway, create a New Service from Image.
+4. Paste the image name and tag, then deploy.
+5. Add the same Railway env vars listed below.
+
+Example commands (Docker Hub):
+
+```bash
+cd myproject
+docker build -t <dockerhub-username>/dsavault-backend:latest .
+docker push <dockerhub-username>/dsavault-backend:latest
+```
+
+Example commands (GHCR):
+
+```bash
+cd myproject
+docker build -t ghcr.io/<github-username>/dsavault-backend:latest .
+docker push ghcr.io/<github-username>/dsavault-backend:latest
+```
+
+If Railway cannot pull the image, confirm the image is public or configure registry credentials.
+
 #### Railway variables (copy-paste template)
 
 ```env
@@ -132,6 +179,17 @@ Notes:
   - `VITE_API_BASE_URL` = your Railway backend URL (for example `https://your-app.up.railway.app`)
 
 4. Deploy.
+
+If GitHub import is failing in Vercel, deploy using Vercel CLI from `frontend`:
+
+```bash
+cd frontend
+npm install
+npm i -g vercel
+vercel
+```
+
+Then set `VITE_API_BASE_URL` in the Vercel project settings and redeploy.
 
 The frontend now calls `${VITE_API_BASE_URL}/api/...` in production.
 

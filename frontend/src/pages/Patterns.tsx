@@ -4,6 +4,7 @@ import { getPatterns, createPattern, deletePattern } from '../api/patterns';
 import type { Pattern } from '../types';
 import { confidenceBadge } from '../components/Badge';
 import Modal from '../components/Modal';
+import ReactMarkdown from 'react-markdown';
 
 export default function Patterns() {
   const [patterns, setPatterns] = useState<Pattern[]>([]);
@@ -75,9 +76,7 @@ export default function Patterns() {
                 {confidenceBadge(p.confidence)}
               </div>
               {p.notes && (
-                <div className="card-notes">
-                  {p.notes.length > 100 ? p.notes.slice(0, 100) + '…' : p.notes}
-                </div>
+                <div className="card-notes markdown-content"><ReactMarkdown>{p.notes.length > 100 ? p.notes.slice(0, 100) + '...' : p.notes}</ReactMarkdown></div>
               )}
               <div className="card-footer-row">
                 <div className="card-stat">
@@ -154,3 +153,7 @@ export default function Patterns() {
     </div>
   );
 }
+
+
+
+
