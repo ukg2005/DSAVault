@@ -181,6 +181,9 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
     r.strip() for r in _cors_regex_env.split(',') if r.strip()
 ]
 
+# Allow requests from any origin (explicitly requested for deployment simplicity).
+CORS_ALLOW_ALL_ORIGINS = True
+
 _csrf_env = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173')
 CSRF_TRUSTED_ORIGINS = [o.strip() for o in _csrf_env.split(',') if o.strip()]
 
