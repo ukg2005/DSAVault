@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { getDashboard } from '../api/dashboard';
 import type { DashboardData } from '../types';
 import { difficultyBadge, confidenceBadge } from '../components/Badge';
@@ -7,6 +8,7 @@ import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGri
 export default function Dashboard() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getDashboard()
@@ -127,11 +129,18 @@ export default function Dashboard() {
           {data.weak_patterns.length > 0 && (
             <div className="dashboard-section" style={{ margin: 0 }}>
               <h2 className="section-title" style={{ color: 'var(--hard)' }}>Weak Patterns</h2>
-              <div className="flex-row" style={{ flexWrap: 'wrap' }}>
+              <div className="card-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))' }}>
                 {data.weak_patterns.map((p, i) => (
-                  <div key={i} className="card" style={{ padding: '10px 14px', borderLeft: '4px solid var(--hard)' }}>   
-                    <div style={{ fontWeight: 600, marginBottom: 6 }}>{p.pattern}</div>
-                    {confidenceBadge(p.confidence)}
+                  <div 
+                    key={i} 
+                    className="card card-clickable" 
+                    onClick={() => navigate(`/patterns/${p.id}`)}
+                    style={{ borderTop: '3px solid var(--hard)' }}
+                  >
+                    <div className="card-title">{p.pattern}</div>
+                    <div className="card-meta" style={{ marginTop: 8 }}>
+                      {confidenceBadge(p.confidence)}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -153,9 +162,14 @@ export default function Dashboard() {
                   <tbody>
                     {data.due_for_revision.slice(0, 5).map((p) => (
                       <tr key={p.id}>
-                        <td>{p.problem_name} {difficultyBadge(p.difficulty)}</td>
+                        <td>
+                          <Link to={`/problems/${p.id}`} className="hover-link" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ fontWeight: 500 }}>{p.problem_name}</span> 
+                            {difficultyBadge(p.difficulty)}
+                          </Link>
+                        </td>
                         <td style={{ color: 'var(--hard)', fontSize: 13 }}>
-                          {new Date(p.reminder).toLocaleDateString('en-GB')}        
+                          {new Date(p.reminder).toLocaleDateString('en-GB')}
                         </td>
                       </tr>
                     ))}
@@ -181,7 +195,9 @@ export default function Dashboard() {
             <tbody>
               {data.by_pattern.sort((a,b) => b.problem_count - a.problem_count).map((p, i) => (
                 <tr key={i}>
-                  <td>{p.pattern}</td>
+                  <td>
+                    <Link to={`/patterns/${p.id}`} className="hover-link" style={{ textDecoration: 'none', color: 'inherit', fontWeight: 500 }}>{p.pattern}</Link>
+                  </td>
                   <td>{confidenceBadge(p.confidence)}</td>
                   <td>{p.problem_count}</td>
                 </tr>

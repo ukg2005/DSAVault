@@ -164,7 +164,7 @@ class DashboardView(APIView):
 
         by_pattern = Pattern.objects.annotate(
             problem_count=Count('problems')
-        ).values('pattern', 'problem_count', 'confidence')
+        ).values('id', 'pattern', 'problem_count', 'confidence')
 
         by_difficulty = Problem.objects.values('difficulty').annotate(
             count=Count('id')
@@ -186,22 +186,27 @@ class DashboardView(APIView):
 
         weak_patterns = Pattern.objects.filter(
             Q(confidence='BLIND') | Q(confidence='LOW')
-        ).values('pattern', 'confidence')
+        ).values('id', 'pattern', 'confidence')
 
         # Compute activity graph in Python to avoid SQLite timezone casting errors
         recent_activity_attempts = Attempt.objects.filter(
             solved_at__gte=timezone.now() - timedelta(days=60)
         ).values('solved_at')
-        
-        from collections import defaultdict
-        activity_dict = defaultdict(int)
+
+        activity_dict = {}
+        today = timezone.localtime().date()
+        for i in range(59, -1, -1):
+            d = today - timedelta(days=i)
+            activity_dict[d.strftime('%Y-%m-%d')] = 0
+
         for att in recent_activity_attempts:
             if att['solved_at']:
                 # format solved_at as YYYY-MM-DD
-                d_str = att['solved_at'].strftime('%Y-%m-%d')
-                activity_dict[d_str] += 1
-                
-        activity_graph = [{'date': k, 'count': v} for k, v in sorted(activity_dict.items())]
+                d_str = att['solved_at'].localtime().strftime('%Y-%m-%d') if hasattr(att['solved_at'], 'localtime') else att['solved_at'].strftime('%Y-%m-%d')
+                if d_str in activity_dict:
+                    activity_dict[d_str] += 1
+
+        activity_graph = [{'date': k, 'count': v} for k, v in activity_dict.items()]
 
         return Response({
             'total_problems': total_problems,
@@ -213,5 +218,6 @@ class DashboardView(APIView):
             'weak_patterns': list(weak_patterns),
             'activity_graph': activity_graph,
         })
+
 
 

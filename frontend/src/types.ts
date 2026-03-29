@@ -34,11 +34,12 @@ export interface PaginatedResponse<T> {
 
 export interface DashboardData {
   total_problems: number;
-  by_pattern: { pattern: string; problem_count: number; confidence: string }[];
+  by_pattern: { id: number; pattern: string; problem_count: number; confidence: string }[];
   by_difficulty: { difficulty: string; count: number }[];
   by_status: { status: string; count: number }[];
   due_for_revision: { id: number; problem_name: string; difficulty: string; reminder: string }[];
   recent_attempts: { problem__problem_name: string; status: string; solved_at: string }[];
-  weak_patterns: { pattern: string; confidence: string }[];
+  weak_patterns: { id: number; pattern: string; confidence: string }[];
   activity_graph: { date: string; count: number }[];
 }
+

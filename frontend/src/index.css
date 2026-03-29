@@ -790,3 +790,4 @@ input[type="radio"]:hover {
     grid-template-columns: 1fr 1fr;
   }
 }
+.hover-link:hover { color: var(--accent) !important; text-decoration: underline !important; }
