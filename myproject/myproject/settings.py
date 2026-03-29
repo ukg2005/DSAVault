@@ -173,6 +173,14 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 _cors_env = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:5173')
 CORS_ALLOWED_ORIGINS = [o.strip() for o in _cors_env.split(',') if o.strip()]
 
+_cors_regex_env = os.environ.get(
+    'CORS_ALLOWED_ORIGIN_REGEXES',
+    r'^https://.*\.vercel\.app$'
+)
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r.strip() for r in _cors_regex_env.split(',') if r.strip()
+]
+
 _csrf_env = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173')
 CSRF_TRUSTED_ORIGINS = [o.strip() for o in _csrf_env.split(',') if o.strip()]
 
